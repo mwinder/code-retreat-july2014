@@ -22,22 +22,22 @@ namespace Trivia
             Random rand = random;
             Game aGame = new Game();
 
-            aGame.add("Chet");
-            aGame.add("Pat");
-            aGame.add("Sue");
+            aGame.AddPlayer("Chet");
+            aGame.AddPlayer("Pat");
+            aGame.AddPlayer("Sue");
 
             do
             {
 
-                aGame.roll(rand.Next(5) + 1);
+                aGame.RollDice(rand.Next(5) + 1);
 
                 if (rand.Next(9) == 7)
                 {
-                    notAWinner = aGame.wrongAnswer();
+                    notAWinner = aGame.WrongAnswer();
                 }
                 else
                 {
-                    notAWinner = aGame.wasCorrectlyAnswered();
+                    notAWinner = aGame.CorrectAnswer();
                 }
 
 

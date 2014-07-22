@@ -11,8 +11,8 @@ namespace UglyTrivia
 
         List<string> players = new List<string>();
 
-        int[] places = new int[6];
-        int[] purses = new int[6];
+        int[] boardPosition = new int[6];
+        int[] goldCoins = new int[6];
 
         bool[] inPenaltyBox = new bool[6];
 
@@ -22,7 +22,7 @@ namespace UglyTrivia
         LinkedList<string> rockQuestions = new LinkedList<string>();
 
         int currentPlayer = 0;
-        bool isGettingOutOfPenaltyBox;
+        bool isCurrentPlayerGettingOutOfPenaltyBox;
 
         public Game()
         {
@@ -31,100 +31,100 @@ namespace UglyTrivia
                 popQuestions.AddLast("Pop Question " + i);
                 scienceQuestions.AddLast(("Science Question " + i));
                 sportsQuestions.AddLast(("Sports Question " + i));
-                rockQuestions.AddLast(createRockQuestion(i));
+                rockQuestions.AddLast(CreateRockQuestion(i));
             }
         }
 
-        public String createRockQuestion(int index)
+        public String CreateRockQuestion(int index)
         {
             return "Rock Question " + index;
         }
 
-        public bool isPlayable()
+        public bool IsPlayable()
         {
-            return (howManyPlayers() >= 2);
+            return (HowManyPlayers() >= 2);
         }
 
-        public bool add(String playerName)
+        public bool AddPlayer(String playerName)
         {
 
 
             players.Add(playerName);
-            places[howManyPlayers()] = 0;
-            purses[howManyPlayers()] = 0;
-            inPenaltyBox[howManyPlayers()] = false;
+            boardPosition[HowManyPlayers()] = 0;
+            goldCoins[HowManyPlayers()] = 0;
+            inPenaltyBox[HowManyPlayers()] = false;
 
             Console.WriteLine(playerName + " was added");
             Console.WriteLine("They are player number " + players.Count);
             return true;
         }
 
-        public int howManyPlayers()
+        public int HowManyPlayers()
         {
             return players.Count;
         }
 
-        public void roll(int roll)
+        public void RollDice(int numberRolled)
         {
             Console.WriteLine(players[currentPlayer] + " is the current player");
-            Console.WriteLine("They have rolled a " + roll);
+            Console.WriteLine("They have rolled a " + numberRolled);
 
             if (inPenaltyBox[currentPlayer])
             {
-                if (roll % 2 != 0)
+                if (numberRolled % 2 != 0)
                 {
-                    isGettingOutOfPenaltyBox = true;
+                    isCurrentPlayerGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(players[currentPlayer] + " is getting out of the penalty box");
-                    places[currentPlayer] = places[currentPlayer] + roll;
-                    if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+                    boardPosition[currentPlayer] = boardPosition[currentPlayer] + numberRolled;
+                    if (boardPosition[currentPlayer] > 11) boardPosition[currentPlayer] = boardPosition[currentPlayer] - 12;
 
                     Console.WriteLine(players[currentPlayer]
                             + "'s new location is "
-                            + places[currentPlayer]);
-                    Console.WriteLine("The category is " + currentCategory());
-                    askQuestion();
+                            + boardPosition[currentPlayer]);
+                    Console.WriteLine("The category is " + CurrentCategory());
+                    AskNextQuestion();
                 }
                 else
                 {
                     Console.WriteLine(players[currentPlayer] + " is not getting out of the penalty box");
-                    isGettingOutOfPenaltyBox = false;
+                    isCurrentPlayerGettingOutOfPenaltyBox = false;
                 }
 
             }
             else
             {
 
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+                boardPosition[currentPlayer] = boardPosition[currentPlayer] + numberRolled;
+                if (boardPosition[currentPlayer] > 11) boardPosition[currentPlayer] = boardPosition[currentPlayer] - 12;
 
                 Console.WriteLine(players[currentPlayer]
                         + "'s new location is "
-                        + places[currentPlayer]);
-                Console.WriteLine("The category is " + currentCategory());
-                askQuestion();
+                        + boardPosition[currentPlayer]);
+                Console.WriteLine("The category is " + CurrentCategory());
+                AskNextQuestion();
             }
 
         }
 
-        private void askQuestion()
+        private void AskNextQuestion()
         {
-            if (currentCategory() == "Pop")
+            if (CurrentCategory() == "Pop")
             {
                 Console.WriteLine(popQuestions.First());
                 popQuestions.RemoveFirst();
             }
-            if (currentCategory() == "Science")
+            if (CurrentCategory() == "Science")
             {
                 Console.WriteLine(scienceQuestions.First());
                 scienceQuestions.RemoveFirst();
             }
-            if (currentCategory() == "Sports")
+            if (CurrentCategory() == "Sports")
             {
                 Console.WriteLine(sportsQuestions.First());
                 sportsQuestions.RemoveFirst();
             }
-            if (currentCategory() == "Rock")
+            if (CurrentCategory() == "Rock")
             {
                 Console.WriteLine(rockQuestions.First());
                 rockQuestions.RemoveFirst();
@@ -132,34 +132,34 @@ namespace UglyTrivia
         }
 
 
-        private String currentCategory()
+        private String CurrentCategory()
         {
-            if (places[currentPlayer] == 0) return "Pop";
-            if (places[currentPlayer] == 4) return "Pop";
-            if (places[currentPlayer] == 8) return "Pop";
-            if (places[currentPlayer] == 1) return "Science";
-            if (places[currentPlayer] == 5) return "Science";
-            if (places[currentPlayer] == 9) return "Science";
-            if (places[currentPlayer] == 2) return "Sports";
-            if (places[currentPlayer] == 6) return "Sports";
-            if (places[currentPlayer] == 10) return "Sports";
+            if (boardPosition[currentPlayer] == 0) return "Pop";
+            if (boardPosition[currentPlayer] == 4) return "Pop";
+            if (boardPosition[currentPlayer] == 8) return "Pop";
+            if (boardPosition[currentPlayer] == 1) return "Science";
+            if (boardPosition[currentPlayer] == 5) return "Science";
+            if (boardPosition[currentPlayer] == 9) return "Science";
+            if (boardPosition[currentPlayer] == 2) return "Sports";
+            if (boardPosition[currentPlayer] == 6) return "Sports";
+            if (boardPosition[currentPlayer] == 10) return "Sports";
             return "Rock";
         }
 
-        public bool wasCorrectlyAnswered()
+        public bool CorrectAnswer()
         {
             if (inPenaltyBox[currentPlayer])
             {
-                if (isGettingOutOfPenaltyBox)
+                if (isCurrentPlayerGettingOutOfPenaltyBox)
                 {
                     Console.WriteLine("Answer was correct!!!!");
-                    purses[currentPlayer]++;
+                    goldCoins[currentPlayer]++;
                     Console.WriteLine(players[currentPlayer]
                             + " now has "
-                            + purses[currentPlayer]
+                            + goldCoins[currentPlayer]
                             + " Gold Coins.");
 
-                    bool winner = didPlayerWin();
+                    bool winner = DidCurrentPlayerWin();
                     currentPlayer++;
                     if (currentPlayer == players.Count) currentPlayer = 0;
 
@@ -178,14 +178,14 @@ namespace UglyTrivia
             else
             {
 
-                Console.WriteLine("Answer was corrent!!!!");
-                purses[currentPlayer]++;
+                Console.WriteLine("Answer was correct!!!!");
+                goldCoins[currentPlayer]++;
                 Console.WriteLine(players[currentPlayer]
                         + " now has "
-                        + purses[currentPlayer]
+                        + goldCoins[currentPlayer]
                         + " Gold Coins.");
 
-                bool winner = didPlayerWin();
+                bool winner = DidCurrentPlayerWin();
                 currentPlayer++;
                 if (currentPlayer == players.Count) currentPlayer = 0;
 
@@ -193,7 +193,7 @@ namespace UglyTrivia
             }
         }
 
-        public bool wrongAnswer()
+        public bool WrongAnswer()
         {
             Console.WriteLine("Question was incorrectly answered");
             Console.WriteLine(players[currentPlayer] + " was sent to the penalty box");
@@ -205,9 +205,9 @@ namespace UglyTrivia
         }
 
 
-        private bool didPlayerWin()
+        private bool DidCurrentPlayerWin()
         {
-            return !(purses[currentPlayer] == 6);
+            return !(goldCoins[currentPlayer] == 6);
         }
     }
 

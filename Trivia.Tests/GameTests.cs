@@ -16,7 +16,7 @@ namespace Trivia.Tests
         {
             var game = new Game();
 
-            Assert.That(game.add("Player"), Is.True);
+            Assert.That(game.AddPlayer("Player"), Is.True);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace Trivia.Tests
         {
             var game = new Game();
 
-            Assert.That(game.howManyPlayers(), Is.EqualTo(0));
+            Assert.That(game.HowManyPlayers(), Is.EqualTo(0));
         }
 
         [Test]
@@ -32,9 +32,9 @@ namespace Trivia.Tests
         {
             var game = new Game();
 
-            game.add("Player 1");
+            game.AddPlayer("Player 1");
 
-            Assert.That(game.howManyPlayers(), Is.EqualTo(1));
+            Assert.That(game.HowManyPlayers(), Is.EqualTo(1));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace Trivia.Tests
         {
             var game = new Game();
 
-            Assert.That(game.createRockQuestion(23), Is.EqualTo("Rock Question 23"));
+            Assert.That(game.CreateRockQuestion(23), Is.EqualTo("Rock Question 23"));
 
         }
 
@@ -51,15 +51,15 @@ namespace Trivia.Tests
         {
             var game = new Game();
 
-            Assert.That(game.isPlayable(), Is.False);
+            Assert.That(game.IsPlayable(), Is.False);
         }
 
         [Test]
         public void GameIsNotPlayableWith1Player()
         {
             var game = new Game();
-            game.add("Player 1");
-            Assert.That(game.isPlayable(), Is.False);
+            game.AddPlayer("Player 1");
+            Assert.That(game.IsPlayable(), Is.False);
         }
 
         [Test]
@@ -67,10 +67,10 @@ namespace Trivia.Tests
         {
             var game = new Game();
 
-            game.add("Player 1");
-            game.add("Player 2");
+            game.AddPlayer("Player 1");
+            game.AddPlayer("Player 2");
 
-            Assert.That(game.isPlayable(), Is.True);
+            Assert.That(game.IsPlayable(), Is.True);
         }
 
     }
