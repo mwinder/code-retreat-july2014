@@ -31,7 +31,7 @@ namespace Trivia
 
                 aGame.roll(rand.Next(5) + 1);
 
-                if (rand.Next(9) == 7)
+                if (IsWrongAnswer(rand))
                 {
                     notAWinner = aGame.wrongAnswer();
                 }
@@ -43,6 +43,11 @@ namespace Trivia
 
 
             } while (notAWinner);
+        }
+
+        private static bool IsWrongAnswer(Random rand)
+        {
+            return rand.Next(9) == 7;
         }
 
 

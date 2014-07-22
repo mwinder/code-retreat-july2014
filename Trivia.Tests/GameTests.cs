@@ -38,15 +38,6 @@ namespace Trivia.Tests
         }
 
         [Test]
-        public void CanCreateRockQuestion()
-        {
-            var game = new Game();
-
-            Assert.That(game.createRockQuestion(23), Is.EqualTo("Rock Question 23"));
-
-        }
-
-        [Test]
         public void GameIsNotPlayableWithNoPlayers()
         {
             var game = new Game();
