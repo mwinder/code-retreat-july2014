@@ -10,17 +10,21 @@ namespace Trivia
     public class GameRunner
     {
 
+        public static void Main()
+        {
+            Go(new Random());
+        }
+
         private static bool notAWinner;
 
-        public static void Main(String[] args)
+        public static void Go(Random random)
         {
+            Random rand = random;
             Game aGame = new Game();
 
             aGame.add("Chet");
             aGame.add("Pat");
             aGame.add("Sue");
-
-            Random rand = new Random();
 
             do
             {
@@ -39,7 +43,6 @@ namespace Trivia
 
 
             } while (notAWinner);
-
         }
 
 
