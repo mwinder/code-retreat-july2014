@@ -146,50 +146,66 @@ namespace UglyTrivia
             return "Rock";
         }
 
+
+        public class CorrectAnswerResult
+        {
+            public int NextPlayer;
+            public int Score;
+            public int ScoreIndex;
+            public bool Winner;
+        }
+
         public bool wasCorrectlyAnswered()
         {
+            var correctAnswerResult = wasCorrectlyAnsweredFunction();
+            currentPlayer = correctAnswerResult.NextPlayer;
+            purses[correctAnswerResult.ScoreIndex] = correctAnswerResult.Score;
+
+            return correctAnswerResult.Winner;
+        }
+
+        public CorrectAnswerResult wasCorrectlyAnsweredFunction()
+        {
+            int scoreIndex = currentPlayer;
+
             if (inPenaltyBox[currentPlayer])
             {
                 if (isGettingOutOfPenaltyBox)
                 {
                     Console.WriteLine("Answer was correct!!!!");
-                    purses[currentPlayer]++;
+                    var score = purses[currentPlayer]++;
                     Console.WriteLine(players[currentPlayer]
                             + " now has "
-                            + purses[currentPlayer]
+                            + score
                             + " Gold Coins.");
 
                     bool winner = didPlayerWin();
                     currentPlayer++;
                     if (currentPlayer == players.Count) currentPlayer = 0;
 
-                    return winner;
+                    return new CorrectAnswerResult { Winner = winner, NextPlayer = currentPlayer, Score = score, ScoreIndex = scoreIndex };
                 }
                 else
                 {
                     currentPlayer++;
                     if (currentPlayer == players.Count) currentPlayer = 0;
-                    return true;
+                    return new CorrectAnswerResult { Winner = true, NextPlayer = currentPlayer, Score = purses[scoreIndex], ScoreIndex = scoreIndex };
                 }
-
-
-
             }
             else
             {
-
                 Console.WriteLine("Answer was corrent!!!!");
-                purses[currentPlayer]++;
+                var score = purses[currentPlayer]++;
                 Console.WriteLine(players[currentPlayer]
                         + " now has "
-                        + purses[currentPlayer]
+                        + score
                         + " Gold Coins.");
 
                 bool winner = didPlayerWin();
                 currentPlayer++;
                 if (currentPlayer == players.Count) currentPlayer = 0;
 
-                return winner;
+                return new CorrectAnswerResult { Winner = winner, NextPlayer = currentPlayer, Score = score, ScoreIndex = scoreIndex };
             }
         }
 
